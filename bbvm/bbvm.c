@@ -132,13 +132,13 @@ int calculate_reg(int lengh_program){
 
 void print_register(int length){
 	int i;
+	printf("Register: ");
 	for(i = 0; i < length; i++)
 		printf("%d ", reg_list[i]);
 	printf("\n");
 }
 
-void decode_mode(char opcode,int step,int v1,int v2,int flag){
-	print_register(max_reg);
+void debug_mode(char opcode,int step,int v1,int v2,int flag){
 	switch(opcode){
 		case LOAD_INS:
 			printf("%d load r%d,#%d\n", step,v1,v2);
@@ -147,8 +147,8 @@ void decode_mode(char opcode,int step,int v1,int v2,int flag){
 			printf("%d mov r%d,r%d\n", step,v2,v1);
 			break;
 		case JE_INS:
-			printf("Flag: %d\n", flag);
 			printf("%d je %d\n", step,v1);
+			printf("Flag: %d\n", flag);
 			break;
 		case JMP_INS:
 			printf("%d jmp %d\n", step,v1);
@@ -166,6 +166,7 @@ void decode_mode(char opcode,int step,int v1,int v2,int flag){
 			printf("%d cmp r%d,0\n", step,v1);
 			break;
 	}
+	print_register(max_reg);
 	puts("---------------------");
 #if __linux__
 	sleep(1);
@@ -226,7 +227,7 @@ void implement_prorgram(){
 		else
 			check = 0;
 		if(debug)
-			decode_mode(opcode,last_step,value1,value2,flag);
+			debug_mode(opcode,last_step,value1,value2,flag);
 	}
 }
 
