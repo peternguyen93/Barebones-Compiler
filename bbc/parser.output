@@ -1,0 +1,486 @@
+Grammar
+
+    0 $accept: program $end
+
+    1 program: stmt_list
+    2        | init_list stmt_list
+
+    3 init_list: init
+    4          | init_list init
+
+    5 init: INIT var '=' INTEGER ';'
+
+    6 stmt_list: stmt
+    7          | stmt_list stmt
+
+    8 stmt: clear_stmt
+    9     | incr_stmt
+   10     | decr_stmt
+   11     | while_stmt
+   12     | copy_stmt
+
+   13 var: IDENT
+
+   14 clear_stmt: CLEAR var ';'
+
+   15 incr_stmt: INCR var ';'
+
+   16 decr_stmt: DECR var ';'
+
+   17 while_stmt: WHILE var NOT INTEGER DO ';' stmt_list END ';'
+
+   18 copy_stmt: COPY var TO var ';'
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+';' (59) 5 14 15 16 17 18
+'=' (61) 5
+error (256)
+CLEAR (258) 14
+COPY (259) 18
+DECR (260) 16
+DO (261) 17
+END (262) 17
+INCR (263) 15
+INIT (264) 5
+NOT (265) 17
+TO (266) 18
+WHILE (267) 17
+IDENT (268) 13
+INTEGER (269) 5 17
+
+
+Nonterminals, with rules where they appear
+
+$accept (17)
+    on left: 0
+program (18)
+    on left: 1 2, on right: 0
+init_list (19)
+    on left: 3 4, on right: 2 4
+init (20)
+    on left: 5, on right: 3 4
+stmt_list (21)
+    on left: 6 7, on right: 1 2 7 17
+stmt (22)
+    on left: 8 9 10 11 12, on right: 6 7
+var (23)
+    on left: 13, on right: 5 14 15 16 17 18
+clear_stmt (24)
+    on left: 14, on right: 8
+incr_stmt (25)
+    on left: 15, on right: 9
+decr_stmt (26)
+    on left: 16, on right: 10
+while_stmt (27)
+    on left: 17, on right: 11
+copy_stmt (28)
+    on left: 18, on right: 12
+
+
+state 0
+
+    0 $accept: . program $end
+
+    CLEAR  shift, and go to state 1
+    COPY   shift, and go to state 2
+    DECR   shift, and go to state 3
+    INCR   shift, and go to state 4
+    INIT   shift, and go to state 5
+    WHILE  shift, and go to state 6
+
+    program     go to state 7
+    init_list   go to state 8
+    init        go to state 9
+    stmt_list   go to state 10
+    stmt        go to state 11
+    clear_stmt  go to state 12
+    incr_stmt   go to state 13
+    decr_stmt   go to state 14
+    while_stmt  go to state 15
+    copy_stmt   go to state 16
+
+
+state 1
+
+   14 clear_stmt: CLEAR . var ';'
+
+    IDENT  shift, and go to state 17
+
+    var  go to state 18
+
+
+state 2
+
+   18 copy_stmt: COPY . var TO var ';'
+
+    IDENT  shift, and go to state 17
+
+    var  go to state 19
+
+
+state 3
+
+   16 decr_stmt: DECR . var ';'
+
+    IDENT  shift, and go to state 17
+
+    var  go to state 20
+
+
+state 4
+
+   15 incr_stmt: INCR . var ';'
+
+    IDENT  shift, and go to state 17
+
+    var  go to state 21
+
+
+state 5
+
+    5 init: INIT . var '=' INTEGER ';'
+
+    IDENT  shift, and go to state 17
+
+    var  go to state 22
+
+
+state 6
+
+   17 while_stmt: WHILE . var NOT INTEGER DO ';' stmt_list END ';'
+
+    IDENT  shift, and go to state 17
+
+    var  go to state 23
+
+
+state 7
+
+    0 $accept: program . $end
+
+    $end  shift, and go to state 24
+
+
+state 8
+
+    2 program: init_list . stmt_list
+    4 init_list: init_list . init
+
+    CLEAR  shift, and go to state 1
+    COPY   shift, and go to state 2
+    DECR   shift, and go to state 3
+    INCR   shift, and go to state 4
+    INIT   shift, and go to state 5
+    WHILE  shift, and go to state 6
+
+    init        go to state 25
+    stmt_list   go to state 26
+    stmt        go to state 11
+    clear_stmt  go to state 12
+    incr_stmt   go to state 13
+    decr_stmt   go to state 14
+    while_stmt  go to state 15
+    copy_stmt   go to state 16
+
+
+state 9
+
+    3 init_list: init .
+
+    $default  reduce using rule 3 (init_list)
+
+
+state 10
+
+    1 program: stmt_list .
+    7 stmt_list: stmt_list . stmt
+
+    CLEAR  shift, and go to state 1
+    COPY   shift, and go to state 2
+    DECR   shift, and go to state 3
+    INCR   shift, and go to state 4
+    WHILE  shift, and go to state 6
+
+    $default  reduce using rule 1 (program)
+
+    stmt        go to state 27
+    clear_stmt  go to state 12
+    incr_stmt   go to state 13
+    decr_stmt   go to state 14
+    while_stmt  go to state 15
+    copy_stmt   go to state 16
+
+
+state 11
+
+    6 stmt_list: stmt .
+
+    $default  reduce using rule 6 (stmt_list)
+
+
+state 12
+
+    8 stmt: clear_stmt .
+
+    $default  reduce using rule 8 (stmt)
+
+
+state 13
+
+    9 stmt: incr_stmt .
+
+    $default  reduce using rule 9 (stmt)
+
+
+state 14
+
+   10 stmt: decr_stmt .
+
+    $default  reduce using rule 10 (stmt)
+
+
+state 15
+
+   11 stmt: while_stmt .
+
+    $default  reduce using rule 11 (stmt)
+
+
+state 16
+
+   12 stmt: copy_stmt .
+
+    $default  reduce using rule 12 (stmt)
+
+
+state 17
+
+   13 var: IDENT .
+
+    $default  reduce using rule 13 (var)
+
+
+state 18
+
+   14 clear_stmt: CLEAR var . ';'
+
+    ';'  shift, and go to state 28
+
+
+state 19
+
+   18 copy_stmt: COPY var . TO var ';'
+
+    TO  shift, and go to state 29
+
+
+state 20
+
+   16 decr_stmt: DECR var . ';'
+
+    ';'  shift, and go to state 30
+
+
+state 21
+
+   15 incr_stmt: INCR var . ';'
+
+    ';'  shift, and go to state 31
+
+
+state 22
+
+    5 init: INIT var . '=' INTEGER ';'
+
+    '='  shift, and go to state 32
+
+
+state 23
+
+   17 while_stmt: WHILE var . NOT INTEGER DO ';' stmt_list END ';'
+
+    NOT  shift, and go to state 33
+
+
+state 24
+
+    0 $accept: program $end .
+
+    $default  accept
+
+
+state 25
+
+    4 init_list: init_list init .
+
+    $default  reduce using rule 4 (init_list)
+
+
+state 26
+
+    2 program: init_list stmt_list .
+    7 stmt_list: stmt_list . stmt
+
+    CLEAR  shift, and go to state 1
+    COPY   shift, and go to state 2
+    DECR   shift, and go to state 3
+    INCR   shift, and go to state 4
+    WHILE  shift, and go to state 6
+
+    $default  reduce using rule 2 (program)
+
+    stmt        go to state 27
+    clear_stmt  go to state 12
+    incr_stmt   go to state 13
+    decr_stmt   go to state 14
+    while_stmt  go to state 15
+    copy_stmt   go to state 16
+
+
+state 27
+
+    7 stmt_list: stmt_list stmt .
+
+    $default  reduce using rule 7 (stmt_list)
+
+
+state 28
+
+   14 clear_stmt: CLEAR var ';' .
+
+    $default  reduce using rule 14 (clear_stmt)
+
+
+state 29
+
+   18 copy_stmt: COPY var TO . var ';'
+
+    IDENT  shift, and go to state 17
+
+    var  go to state 34
+
+
+state 30
+
+   16 decr_stmt: DECR var ';' .
+
+    $default  reduce using rule 16 (decr_stmt)
+
+
+state 31
+
+   15 incr_stmt: INCR var ';' .
+
+    $default  reduce using rule 15 (incr_stmt)
+
+
+state 32
+
+    5 init: INIT var '=' . INTEGER ';'
+
+    INTEGER  shift, and go to state 35
+
+
+state 33
+
+   17 while_stmt: WHILE var NOT . INTEGER DO ';' stmt_list END ';'
+
+    INTEGER  shift, and go to state 36
+
+
+state 34
+
+   18 copy_stmt: COPY var TO var . ';'
+
+    ';'  shift, and go to state 37
+
+
+state 35
+
+    5 init: INIT var '=' INTEGER . ';'
+
+    ';'  shift, and go to state 38
+
+
+state 36
+
+   17 while_stmt: WHILE var NOT INTEGER . DO ';' stmt_list END ';'
+
+    DO  shift, and go to state 39
+
+
+state 37
+
+   18 copy_stmt: COPY var TO var ';' .
+
+    $default  reduce using rule 18 (copy_stmt)
+
+
+state 38
+
+    5 init: INIT var '=' INTEGER ';' .
+
+    $default  reduce using rule 5 (init)
+
+
+state 39
+
+   17 while_stmt: WHILE var NOT INTEGER DO . ';' stmt_list END ';'
+
+    ';'  shift, and go to state 40
+
+
+state 40
+
+   17 while_stmt: WHILE var NOT INTEGER DO ';' . stmt_list END ';'
+
+    CLEAR  shift, and go to state 1
+    COPY   shift, and go to state 2
+    DECR   shift, and go to state 3
+    INCR   shift, and go to state 4
+    WHILE  shift, and go to state 6
+
+    stmt_list   go to state 41
+    stmt        go to state 11
+    clear_stmt  go to state 12
+    incr_stmt   go to state 13
+    decr_stmt   go to state 14
+    while_stmt  go to state 15
+    copy_stmt   go to state 16
+
+
+state 41
+
+    7 stmt_list: stmt_list . stmt
+   17 while_stmt: WHILE var NOT INTEGER DO ';' stmt_list . END ';'
+
+    CLEAR  shift, and go to state 1
+    COPY   shift, and go to state 2
+    DECR   shift, and go to state 3
+    END    shift, and go to state 42
+    INCR   shift, and go to state 4
+    WHILE  shift, and go to state 6
+
+    stmt        go to state 27
+    clear_stmt  go to state 12
+    incr_stmt   go to state 13
+    decr_stmt   go to state 14
+    while_stmt  go to state 15
+    copy_stmt   go to state 16
+
+
+state 42
+
+   17 while_stmt: WHILE var NOT INTEGER DO ';' stmt_list END . ';'
+
+    ';'  shift, and go to state 43
+
+
+state 43
+
+   17 while_stmt: WHILE var NOT INTEGER DO ';' stmt_list END ';' .
+
+    $default  reduce using rule 17 (while_stmt)
