@@ -162,37 +162,37 @@ void encode_stmt(stmt_t *stmt){
 	switch(stmt->type){
 		case DECR_STMT:
 			check_var_init(stmt->var);
-			stmt_line++;
 			instr_encode_group_1(6,"dec",stmt->var->num);
+			stmt_line++;
 			break;
 		case INCR_STMT:
 			check_var_init(stmt->var);
-			stmt_line++;
 			instr_encode_group_1(5,"inc",stmt->var->num);
+			stmt_line++;
 			break;
 		case WHILE_STMT:
 			check_var_init(stmt->var);
 
-			stmt_line++;
 			instr_encode_group_1(7,"cmp",stmt->var->num);
-
 			stmt_line++;
+
 			count = count_sub_stmt(stmt->stmt_list);
 			instr_encode_group_1(1,"je",stmt_line+count+2);
+			stmt_line++;
 
 			first_stmt_while = encode_stmt_list(stmt->stmt_list);
+			instr_encode_group_1(8,"jmp",first_stmt_while-3);
 			stmt_line++;
-			instr_encode_group_1(8,"jmp",first_stmt_while-2);
 			break;
 		case CLEAR_STMT:
 			check_var_init(stmt->var);
-			stmt_line++;
 			instr_encode_group_1(4,"clear",stmt->var->num);
+			stmt_line++;
 			break;
 		case COPY_STMT:
 			check_var_init(stmt->var);
-			stmt_line++;
 			instr_encode_group_2(3,stmt->dest->num,stmt->var->num);
+			stmt_line++;
 			break;
 	}
 }
@@ -221,8 +221,10 @@ void compile_program(char *output){
 		error_report("Can't open file",output);
 
 	while(loop){
-		if(loop->val)//find init stmt 
+		if(loop->val){//find init stmt 
 			instr_encode_group_2(2,loop->num,loop->val);
+			stmt_line++;
+		}
 		loop = loop->next;
 	}
 
